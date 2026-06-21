@@ -3,11 +3,11 @@ export default defineNuxtConfig({
 	app: {
 		head: {
 			htmlAttrs: {
-				lang: "en",
+				lang: "fr",
 			},
 			charset: "utf-8",
 			viewport: "width=device-width, initial-scale=1",
-			title: "Nuxt & Decap CMS boilerplate",
+			title: "Instants Eternels",
 		},
 	},
 	modules: ["@nuxt/content"],
@@ -21,7 +21,7 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			// set your cloudinary env url (used to built responsive assets links)
-			cloudinaryEnvUrl: 'https://res.cloudinary.com/sailsnake-api-test',
+			cloudinaryEnvUrl: 'https://res.cloudinary.com/dvslwsa0d',
 		}
 	},
 	css: [

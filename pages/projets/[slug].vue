@@ -20,9 +20,8 @@
 		</div>
 
 		<ul v-if="projet?.images?.length" class="projet__gallery">
-			<li v-for="(item, i) in projet.images" :key="i" class="projet__gallery-item">
-				<MediaRespImage :url="item.image" :lightbox="true" objectFit="cover" />
-				<p v-if="item.caption" class="projet__caption">{{ item.caption }}</p>
+			<li v-for="(imageUrl, i) in projet.images" :key="i" class="projet__gallery-item">
+				<MediaRespImage :url="imageUrl" :lightbox="true" objectFit="cover" />
 			</li>
 		</ul>
 
@@ -132,12 +131,6 @@ function formatDate(date) {
 	position: relative;
 }
 
-.projet__caption {
-	margin: $spacing1 0 0;
-	font-size: $font-size8;
-	color: $muted;
-	font-style: italic;
-}
 
 .projet__nav {
 	margin-top: $spacing7;

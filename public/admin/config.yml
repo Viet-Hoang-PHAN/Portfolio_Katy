@@ -125,9 +125,13 @@ collections:
         name: "images"
         widget: "list"
         required: false
-        fields:
-          - { name: "image", label: "Image", widget: "image" }
-          - { name: "caption", label: "Légende", widget: "string", required: false }
+        field:
+          name: "image"
+          label: "Image"
+          widget: "image"
+          media_library:
+            config:
+              multiple: true
       - *seo
      
 

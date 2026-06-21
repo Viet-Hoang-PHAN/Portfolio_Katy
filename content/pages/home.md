@@ -1,13 +1,14 @@
 ---
 title: Accueil
-content: >-
+content: |-
   # Instants Eternels
 
-  Texte d'accroche à compléter.
+  ![](/HKpBM0yWkAAclyd_dytnp6.jpg)
 
+  Texte d'accroche à compléter.
 SEOmetaData:
   metaTitle: Instants Eternels
   metaDescription: Portfolio Instants Eternels.
-  metaImage: ""
+  metaImage: /HKpBM0yWkAAclyd_dytnp6.jpg
   keywords: portfolio, instants eternels
 ---

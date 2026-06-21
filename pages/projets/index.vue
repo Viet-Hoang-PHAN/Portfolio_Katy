@@ -1,23 +1,30 @@
 <template>
 	<main id="main" class="projets">
 		<ul class="projets__grid">
-			<li v-for="projet in projets" :key="projet._path" class="projet-card">
+			<li
+				v-for="(projet, index) in projets"
+				:key="projet._path"
+				class="projet-card"
+				:class="{ '--featured': index === 0 }"
+			>
 				<NuxtLink :to="projet._path">
-					<div class="projet-card__image">
-						<MediaRespImage
-							v-if="projet.coverImage"
-							:url="projet.coverImage"
-							:lightbox="false"
-							objectFit="cover"
-						/>
-						<div v-else class="projet-card__placeholder" />
-					</div>
-					<div class="projet-card__overlay">
-						<span v-if="projet.category" class="projet-card__category">
-							{{ projet.category }}
-						</span>
-						<p class="projet-card__title">{{ projet.title }}</p>
-					</div>
+					<figure class="projet-card__figure">
+						<div class="projet-card__image-wrap">
+							<img
+								v-if="projet.coverImage"
+								:src="getImageUrl(projet.coverImage, index)"
+								:alt="projet.title"
+								class="projet-card__img"
+							/>
+							<div v-else class="projet-card__placeholder" />
+						</div>
+						<figcaption class="projet-card__info">
+							<span v-if="projet.category" class="projet-card__category">
+								{{ projet.category }}
+							</span>
+							<p class="projet-card__title">{{ projet.title }}</p>
+						</figcaption>
+					</figure>
 				</NuxtLink>
 			</li>
 		</ul>
@@ -25,17 +32,23 @@
 </template>
 
 <script setup>
+import cldDelivery from '~/composables/cldDelivery';
+
 useHead({ title: 'Projets — Instants Eternels' });
 
 const { data: projets } = await useAsyncData('projets', () =>
 	queryContent('/projets').sort({ date: -1 }).find()
 );
+
+function getImageUrl(url, index) {
+	const width = index === 0 ? 'w_1600' : 'w_900';
+	return cldDelivery(url, `f_auto,c_scale,${width}`);
+}
 </script>
 
 <style lang="scss" scoped>
 .projets {
-	padding-block: $spacing6;
-
+	padding-block: $spacing5 $spacing8;
 	@include fade-in;
 }
 
@@ -43,65 +56,70 @@ const { data: projets } = await useAsyncData('projets', () =>
 	list-style: none;
 	padding: 0;
 	margin: 0;
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: $spacing2;
-
-	@include media(sm) {
-		grid-template-columns: repeat(2, 1fr);
-	}
+	columns: 2;
+	column-gap: $spacing3;
 
 	@include media(xsm) {
-		grid-template-columns: 1fr;
+		columns: 1;
+	}
+}
+
+// Premier projet : pleine largeur, panoramique
+.projet-card.--featured {
+	column-span: all;
+	margin-bottom: $spacing3;
+
+	.projet-card__image-wrap {
+		aspect-ratio: 16 / 7;
+
+		img {
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	.projet-card__title {
+		font-size: $font-size3;
 	}
 }
 
 .projet-card {
-	position: relative;
-	overflow: hidden;
+	break-inside: avoid;
+	margin-bottom: $spacing3;
 
 	a {
 		display: block;
-		position: relative;
-		aspect-ratio: 3 / 4;
-		overflow: hidden;
 	}
 }
 
-.projet-card__image {
-	position: absolute;
-	inset: 0;
-	transition: transform $transition4;
+.projet-card__figure {
+	margin: 0;
+}
 
-	.projet-card a:hover & {
-		transform: scale(1.03);
+.projet-card__image-wrap {
+	overflow: hidden;
+	background: $cream;
+
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+		transition: transform $transition4;
+	}
+
+	.projet-card a:hover & img {
+		transform: scale(1.04);
 	}
 }
 
 .projet-card__placeholder {
-	width: 100%;
-	height: 100%;
+	aspect-ratio: 4 / 5;
 	background: $cream;
 }
 
-.projet-card__overlay {
-	position: absolute;
-	inset: 0;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-	padding: $spacing4;
-	background: linear-gradient(to top, rgba($ink, 0.65) 0%, transparent 55%);
-	opacity: 0;
-	transition: opacity $transition3;
-
-	.projet-card a:hover & {
-		opacity: 1;
-	}
-
-	@include media(xsm) {
-		opacity: 1;
-	}
+.projet-card__info {
+	padding: $spacing2 0 $spacing1;
+	border-bottom: 1px solid $cream;
 }
 
 .projet-card__category {
@@ -109,7 +127,7 @@ const { data: projets } = await useAsyncData('projets', () =>
 	font-size: $font-size8;
 	letter-spacing: 0.15em;
 	text-transform: uppercase;
-	color: $gold-light;
+	color: $gold;
 	margin-bottom: $spacing0;
 }
 
@@ -119,7 +137,12 @@ const { data: projets } = await useAsyncData('projets', () =>
 	font-size: $font-size5;
 	font-weight: normal;
 	letter-spacing: 0.05em;
-	color: $white;
+	color: $ink;
 	line-height: 1.3;
+	transition: color $transition2;
+
+	.projet-card a:hover & {
+		color: $gold;
+	}
 }
 </style>

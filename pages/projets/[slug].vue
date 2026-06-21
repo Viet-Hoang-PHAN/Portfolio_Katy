@@ -46,6 +46,7 @@ if (projet?.SEOmetaData) {
 const { data: galleryImages } = await useFetch('/api/cloudinary-images', {
 	key: `gallery-${route.params.slug}`,
 	query: { folder: projet?.cloudinaryFolder ?? '' },
+	server: false,
 	default: () => []
 });
 

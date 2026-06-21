@@ -19,8 +19,8 @@
 			<MDC :value="projet.content" />
 		</div>
 
-		<ul v-if="projet?.images?.length" class="projet__gallery">
-			<li v-for="(imageUrl, i) in projet.images" :key="i" class="projet__gallery-item">
+		<ul v-if="galleryImages?.length" class="projet__gallery">
+			<li v-for="(imageUrl, i) in galleryImages" :key="i" class="projet__gallery-item">
 				<MediaRespImage :url="imageUrl" :lightbox="true" objectFit="cover" />
 			</li>
 		</ul>
@@ -42,6 +42,12 @@ const { data: projet } = reactive(await useAsyncData(`projet-${route.params.slug
 if (projet?.SEOmetaData) {
 	setSeoHead(projet.SEOmetaData);
 }
+
+const { data: galleryImages } = await useFetch('/api/cloudinary-images', {
+	key: `gallery-${route.params.slug}`,
+	query: { folder: projet?.cloudinaryFolder ?? '' },
+	default: () => []
+});
 
 function formatDate(date) {
 	return new Date(date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long' });

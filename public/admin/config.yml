@@ -121,17 +121,11 @@ collections:
       - { name: "coverImage", label: "Image de couverture", widget: "image", required: false }
       - { name: "description", label: "Description courte", widget: "text", required: false, hint: "Affichée dans la grille et en introduction de la page projet" }
       - { name: "content", label: "Contenu", widget: "markdown", required: false }
-      - label: "Galerie"
-        name: "images"
-        widget: "list"
+      - name: "cloudinaryFolder"
+        label: "Dossier Cloudinary (galerie)"
+        widget: "string"
         required: false
-        field:
-          name: "image"
-          label: "Image"
-          widget: "image"
-          media_library:
-            config:
-              multiple: true
+        hint: "Nom du dossier dans Cloudinary contenant les images du projet (ex: projets/nom-du-projet)"
       - *seo
      
 

@@ -19,8 +19,8 @@ export default defineNuxtConfig({
 		}
 	},
 	runtimeConfig: {
+		cloudinaryApiSecret: '', // overridden by NUXT_CLOUDINARY_API_SECRET env var
 		public: {
-			// set your cloudinary env url (used to built responsive assets links)
 			cloudinaryEnvUrl: 'https://res.cloudinary.com/dvslwsa0d',
 		}
 	},

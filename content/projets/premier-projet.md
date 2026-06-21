@@ -5,7 +5,7 @@ category: Photographie
 coverImage: ""
 description: Description courte du projet, visible dans la grille et en introduction de la page.
 content: ""
-images: []
+cloudinaryFolder: ""
 SEOmetaData:
   metaTitle: Premier projet — Instants Eternels
   metaDescription: Description courte du projet, visible dans la grille et en introduction de la page.

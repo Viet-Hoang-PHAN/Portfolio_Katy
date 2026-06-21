@@ -3,20 +3,22 @@ h2, .h2,
 h3, .h3,
 h4, .h4,
 h5, .h5 {
-	font-weight: bold;
+	font-weight: normal;
 	margin-top: 2em;
 	margin-bottom: 0;
+	letter-spacing: 0.05em;
 }
 
 h1, .h1,
 h2, .h2,
 h3, .h3 {
 	font-family: $font-accent;
-	text-transform: uppercase;
 }
 
 h1, .h1 {
 	font-size: $font-size1;
+	font-weight: bold;
+	letter-spacing: 0.08em;
 	@include media(xsm) {
 		font-size: $font-size2;
 	}
@@ -24,16 +26,18 @@ h1, .h1 {
 	&:before {
 		position: absolute;
 		content: "";
-		left: -0.2em;
-		top: 0;
-		height: 100%;
-		width: 0.1em;
-		background-image: linear-gradient($base-color, $secondary-color);
+		left: -0.25em;
+		top: 0.1em;
+		height: 80%;
+		width: 0.08em;
+		background: $gold;
+		opacity: 0.7;
 	}
 }
 
 h2, .h2 {
 	font-size: $font-size2;
+	color: $dark-grey;
 	@include media(xsm) {
 		font-size: $font-size3;
 	}
@@ -41,6 +45,7 @@ h2, .h2 {
 
 h3, .h3 {
 	font-size: $font-size4;
+	color: $dark-grey;
 }
 
 h4, .h4 {
@@ -49,35 +54,44 @@ h4, .h4 {
 
 h5, .h5 {
 	font-size: $font-size6;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	color: $muted;
 }
 
-// h3, .h3,
 h4, .h4,
 h5, .h5 {
 	font-family: $font-main;
 }
 
 blockquote {
-	font-size: $font-size5;
+	font-size: $font-size4;
 	font-family: $font-art;
-	font-weight: bold;
-	text-align: justify;
-	text-justify: inter-word;
+	font-weight: normal;
+	font-style: italic;
+	color: $dark-grey;
+	border-left: 0.08em solid $gold;
+	padding-left: $spacing4;
+	margin-inline: 0;
 }
 
 p {
 	font-size: $font-size7;
-	line-height: 1.45em;
+	line-height: 1.6em;
+	color: $dark-grey;
 }
 
 main li {
 	margin-block: $spacing1;
-	line-height: 1.45em;
+	line-height: 1.6em;
+	color: $dark-grey;
 }
 
 code {
-	background: $light-grey;
+	background: $cream;
 	padding: 0 $spacing1;
 	display: inline-block;
+	font-family: $font-decor;
+	font-size: $font-size8;
 }
 

@@ -1,51 +1,36 @@
 <template>
-	<div
-		id="header__logo"
-		class="company-logo"
-	>
-		<NuxtLink to="https://nuxt.com" target="_blank">
-			<img
-				src="/images/logos/nuxt-logo.svg"
-				alt="logo"
-				width="800"
-				height="200"
-			/>
-		</NuxtLink>
-		<NuxtLink to="https://decapcms.org" target="_blank">
-			<img
-				src="/images/logos/decap-logo.svg"
-				alt="logo"
-				width="104"
-				height="30"
-			/>
-		</NuxtLink>
-		<span>Boilerplate</span>
-	</div>
+	<NuxtLink id="header__logo" to="/" aria-label="Retour à l'accueil">
+		<span class="logo__name">{{ site?.siteName }}</span>
+	</NuxtLink>
 </template>
 
+<script setup>
+const { data: site } = await useAsyncData('site-settings', () =>
+	queryContent('/settings/site').findOne()
+);
+</script>
+
 <style lang="scss" scoped>
-	.company-logo {
-		position: relative;
-		height: 2em; 
-		margin: 1em;
-		padding-bottom: 3em;
-		padding-right: 1em;
-		width: max-content;
-		border-right: 1px solid $light-grey;
-		img {
-			position: relative;
-			height: 2em;
-			width: auto;
-		}
-		span {
-			position: absolute;
-			font-size: 0.8em;
-			right: 1em;
-			bottom: 0;
-			transform: translateX(5%);
-			font-style: italic;
-			font-family: $font-art;
-			color: $dark-grey;
-		}
+#header__logo {
+	display: flex;
+	align-items: center;
+}
+
+.logo__name {
+	font-family: $font-art;
+	font-size: $font-size2;
+	font-weight: normal;
+	color: $ink;
+	letter-spacing: 0.03em;
+	transition: color $transition2;
+	white-space: nowrap;
+
+	@include hover {
+		color: $gold;
 	}
+
+	@include media(xsm) {
+		font-size: $font-size3;
+	}
+}
 </style>

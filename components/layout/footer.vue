@@ -1,64 +1,31 @@
 <template>
 	<footer>
-		<div
-			id="__by-sailsnake"
-		>
-			<p>build by:</p>
-			<a href="http://www.sailsnake.com" target="_blank" aria-label="link to www.sailsnake.com">
-				<img src="/images/logos/Sailsnake-logo--footer.png" width="941" height="408" alt="Sailsnake creative studio - logo "/>
-			</a
-			>
-		</div>
+		<p class="footer__credit">
+			&copy; {{ new Date().getFullYear() }} {{ site?.siteName }}
+		</p>
 	</footer>
 </template>
 
-<style lang="scss" scoped>
-	footer {
-		position: relative;
-		height: max-content;
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: $spacing5;
-		margin-inline: $spacing4;
-		opacity: 0;
-		animation: 5s ease 3s forwards appear;
-		@keyframes appear {
-			0% {
-				opacity: 0;
-			}
-			100% {
-				opacity: 1;
-			}
-		}
-		@include media(xsm) {
-			display: block;
-			height: auto;
-			margin-top: $spacing2;
-			margin-inline: 0;
-		}
-	}
+<script setup>
+const { data: site } = await useAsyncData('site-settings', () =>
+	queryContent('/settings/site').findOne()
+);
+</script>
 
-	#__by-sailsnake {
-		grid-column: 2;
-		padding: $spacing1;
-		justify-self: center;
-		border-top: 0.1em solid $light-grey;
-		p {
-			margin: 0;
-			display: inline-block;
-			font-family: $font-art;
-		}
-		a {
-			margin-left: $spacing1;
-			display: inline-block;
-			font-style: normal;
-			text-transform: uppercase;
-			font-family: $font-accent;
-			img {
-				height: $font-size5;
-				width: auto;
-				aspect-ratio: 941 / 408;
-			}
-		}
-	}
+<style lang="scss" scoped>
+footer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: $spacing4 $spacing6;
+	border-top: 1px solid $cream;
+}
+
+.footer__credit {
+	margin: 0;
+	font-size: $font-size8;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: $muted;
+}
 </style>

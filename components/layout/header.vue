@@ -5,41 +5,33 @@
 	</header>
 </template>
 
-
 <style lang="scss" scoped>
 #header {
 	position: relative;
 	display: grid;
-	grid-template-columns: 1fr auto 1fr;
-	grid-template-rows: 1fr;
-	padding: $spacing2;
-	&::before {
+	grid-template-columns: auto 1fr;
+	align-items: center;
+	padding: $spacing4 $spacing6;
+	gap: $spacing6;
+
+	&::after {
 		position: absolute;
 		content: "";
 		width: 100%;
-		height: 0.1em;
-		top: 100%;
-		background-image: linear-gradient(90deg, $base-color, $secondary-color);
+		height: 1px;
+		bottom: 0;
+		left: 0;
+		background: linear-gradient(90deg, $gold 0%, $gold-light 50%, transparent 100%);
+		opacity: 0.5;
 	}
+
 	@include media(xsm) {
-		display: block;
-		padding: $spacing1 0;
-
-		#locale-toggle {
-			display: none;
-		}
+		padding: $spacing3 $spacing3;
+		gap: $spacing3;
 	}
-}
-
-#header__logo {
-	grid-column: 1;
-	grid-row: 1;
 }
 
 #main-menu {
-	grid-column: 2;
-	grid-row: 1;
-	align-self: center;
-	justify-self: center;
+	justify-self: end;
 }
 </style>

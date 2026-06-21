@@ -1,8 +1,6 @@
 html * {
-	/* https://developer.mozilla.org/en-US/docs/Web/CSS/text-size-adjust */
 	-ms-text-size-adjust: 100%;
 	-webkit-text-size-adjust: 100%;
-	/* https://developer.mozilla.org/en-US/docs/Web/CSS/font-smooth */
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-font-smoothing: antialiased;
 	box-sizing: border-box;
@@ -11,44 +9,36 @@ html * {
 
 html {
 	margin: 0;
-	font-size: 15px; // 11pt
+	font-size: 15px;
 	font-family: $font-main;
-	// responsive upscaling for resolutions > 1920px
+	background-color: $off-white;
+	color: $ink;
 	@include media(xlg) {
 		font-size: clamp(15px, 0rem + 0.7813vw, 30px);
 	}
 }
 
-// SCROLLBAR 
 body {
 	scrollbar-width: none;
-	// Firefox
 	-ms-overflow-style: none;
-	// Internet Explorer 10+
 }
 
 body::-webkit-scrollbar {
-	// WebKit
 	width: 0;
 	height: 0;
 }
 
-// Works on Firefox 
 a {
 	text-decoration: none;
 	color: inherit;
 }
 
-/* GRID layout with fixed header*/
-
 html,
 body {
 	height: 100vh;
 	width: 100%;
-	//==
 	margin: 0;
 	padding: 0;
-	//==
 	font-family: $font-main;
 }
 
@@ -63,6 +53,7 @@ body * {
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-template-rows: max-content minmax(0, 1fr) max-content;
+	background-color: $off-white;
 	header {
 		grid-row: 1;
 	}
@@ -73,10 +64,13 @@ body * {
 			min-height: 100%;
 			padding: $spacing6;
 			@include media(xsm) {
-				padding-inline: $spacing2;
+				padding-inline: $spacing3;
 			}
 			a {
-				color: $base-color;
+				color: $gold;
+				@include hover {
+					color: $gold-dark;
+				}
 			}
 		}
 	}

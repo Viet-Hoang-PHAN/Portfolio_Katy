@@ -1,10 +1,10 @@
-# disable in production:  
-local_backend: true
-# command to run a local Decap instance: npx-decap-server
+# Décommenter uniquement en développement local :
+# local_backend: true
+# Commande pour lancer Decap en local : npx decap-server
 
 backend:
   name: git-gateway
-  branch: master # Branch to update (optional; defaults to master)
+  branch: main # Branch to update (optional; defaults to master)
 
 media_folder: "public/upload"
 public_folder: "/"
@@ -35,28 +35,35 @@ seo: &seo
 
 collections:
   - name: "globalContent"
-    label: "global content"
-    files: 
-      - label: "buttons"
+    label: "Contenu global"
+    files:
+      - label: "Site"
+        name: "site"
+        file: "content/settings/site.md"
+        fields:
+          - { name: "siteName", label: "Nom du site", widget: "string" }
+          - { name: "tagline", label: "Tagline", widget: "string", required: false }
+
+      - label: "Navigation"
+        name: "navigation"
+        file: "content/settings/navigation.md"
+        fields:
+          - label: "Liens"
+            name: "items"
+            widget: "list"
+            fields:
+              - { name: "label", label: "Libellé", widget: "string" }
+              - { name: "path", label: "URL", widget: "string" }
+
+      - label: "Boutons"
         name: "buttons"
-        file: "content/site/buttons.md"    
-        fields: 
-          - label: "next"
-            name: "next"
-            widget: "string"        
-          - label: "previous"
-            name: "previous"
-            widget: "string"        
-          - label: "close"
-            name: "close"
-            widget: "string"        
-          - label: "article: more"
-            name: "article"
-            widget: "string"
-            default: "read more"
-          - label: "form: send"
-            name: "send"
-            widget: "string"
+        file: "content/components/buttons.md"
+        fields:
+          - { name: "next", label: "Suivant", widget: "string" }
+          - { name: "previous", label: "Précédent", widget: "string" }
+          - { name: "close", label: "Fermer", widget: "string" }
+          - { name: "article", label: "Lire la suite", widget: "string", default: "Lire la suite" }
+          - { name: "send", label: "Envoyer", widget: "string" }
         
   # SINGLE PAGES
   - name: "pages"
@@ -69,20 +76,60 @@ collections:
           - { name: "title", label: "Title", widget: "string" }
           - { name: "content", label: "Content", widget: "markdown" }
           - *seo
+      - name: "about"
+        label: "À propos"
+        file: "content/pages/about.md"
+        fields:
+          - { name: "title", label: "Titre", widget: "string" }
+          - { name: "photo", label: "Photo", widget: "image", required: false }
+          - { name: "content", label: "Contenu", widget: "markdown" }
+          - *seo
+
+      - name: "contact"
+        label: "Contact"
+        file: "content/pages/contact.md"
+        fields:
+          - { name: "title", label: "Titre", widget: "string" }
+          - { name: "intro", label: "Introduction", widget: "text", required: false }
+          - { name: "email", label: "Email", widget: "string", required: false }
+          - label: "Réseaux sociaux"
+            name: "socialLinks"
+            widget: "list"
+            required: false
+            fields:
+              - { name: "label", label: "Libellé", widget: "string" }
+              - { name: "url", label: "URL", widget: "string" }
+          - *seo
+
       - name: "typography"
         label: "Typography"
         file: "content/pages/typography.md"
         fields:
           - { name: "title", label: "Title", widget: "string" }
           - { name: "content", label: "Content", widget: "markdown" }
-      - name: "Fiddly diddlies"
-        label: "diddlies"
-        extension: json
-        file: "content/pages/fiddly-diddlies.json"
+
+  # PROJETS
+  - name: "projets"
+    label: "Projets"
+    folder: "content/projets"
+    create: true
+    slug: "{{slug}}"
+    preview_path: "projets/{{slug}}"
+    fields:
+      - { name: "title", label: "Titre", widget: "string" }
+      - { name: "date", label: "Date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+      - { name: "category", label: "Catégorie", widget: "string", required: false, hint: "ex: Photographie, Peinture, Illustration…" }
+      - { name: "coverImage", label: "Image de couverture", widget: "image", required: false }
+      - { name: "description", label: "Description courte", widget: "text", required: false, hint: "Affichée dans la grille et en introduction de la page projet" }
+      - { name: "content", label: "Contenu", widget: "markdown", required: false }
+      - label: "Galerie"
+        name: "images"
+        widget: "list"
+        required: false
         fields:
-          - { name: "title", label: "Title", widget: "string" }
-          - { name: "test-fields", label: "field objects test", widget: "string", default: "fields.title" }
-          - { name: "content", label: "Content", widget: "markdown" }
+          - { name: "image", label: "Image", widget: "image" }
+          - { name: "caption", label: "Légende", widget: "string", required: false }
+      - *seo
      
 
           

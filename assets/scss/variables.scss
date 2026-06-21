@@ -1,28 +1,39 @@
-/* COLORS 
-- 
-- 
+/* COLORS
+-
+-
 */
 
-$white: #fff;
-$light-grey: #E5E4E2;
-$grey: #A9A9A9;
-$dark-grey: #36454F;
-$black: #1B1212; 
-$base-color: #ff0080;
-$secondary-color: #1ba673; 
+$off-white: #FAF8F3;
+$cream: #EDE8DC;
+$gold: #C9A84C;
+$gold-light: #E8D5A3;
+$gold-dark: #8B6A14;
+$ink: #1E1A12;
+$muted: #8C7E68;
 
-// additional (used in form validation)
+// neutral
+$white: #fff;
+$light-grey: #E8E3D8;
+$grey: #A89880;
+$dark-grey: #4A3F30;
+$black: #1E1A12;
+
+// kept for form validation
 $orange: #E2A35C;
 $yellow: #FACD07;
-$red: #af110c; 
+$red: #af110c;
 $green: #1a9b20;
+
+// aliases
+$base-color: $gold;
+$secondary-color: $gold-dark;
 
 
 /* FONTS
-- 
-- 
+-
+-
 */
-$font-main: 'Arial';
+$font-main: 'Axia';
 $font-accent: 'Oswald';
 $font-art: 'Tiffany';
 $font-decor: 'Typewriter';

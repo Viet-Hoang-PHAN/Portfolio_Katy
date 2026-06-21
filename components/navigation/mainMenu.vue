@@ -1,158 +1,46 @@
 <template>
 	<div id="main-menu">
-		<div id="mobile-menu__toggle-button" @click="toggleMobileMenu()" :class="{ mobileMenuOpen: mobileMenuActive }">
-			<span>&#x2630;</span>
-			MENU 
-		</div>
+		<button
+			id="mobile-menu__toggle-button"
+			:class="{ mobileMenuOpen: mobileMenuActive }"
+			:aria-expanded="mobileMenuActive"
+			aria-label="Ouvrir le menu"
+			@click="toggleMobileMenu()"
+		>
+			<span aria-hidden="true">&#x2630;</span>
+		</button>
 
-		<nav :class="{ mobileMenuOpen: mobileMenuActive }">
-
+		<nav :class="{ mobileMenuOpen: mobileMenuActive }" aria-label="Navigation principale">
 			<menu class="main-menu__basic">
-				<NuxtLink to="/" class="menu-item item--home" prefetch>
-					<span>home</span>
-				</NuxtLink>
-				<NuxtLink to="/typography" class="menu-item" prefetch>
-					<span>typography</span>
-				</NuxtLink>
+				<li v-for="item in nav?.items" :key="item.path">
+					<NuxtLink :to="item.path" class="menu-item" prefetch>
+						{{ item.label }}
+					</NuxtLink>
+				</li>
 			</menu>
 		</nav>
 	</div>
 </template>
 
 <script setup>
+const { data: nav } = await useAsyncData('navigation', () =>
+	queryContent('/settings/navigation').findOne()
+);
 
-const links = ["products", "dynamic-fields", "contact"];
 const mobileMenuActive = ref(false);
 const route = useRoute();
-watch(route, () => {
-	mobileMenuActive.value = false;
-});
+
+watch(
+	() => route.path,
+	() => { mobileMenuActive.value = false }
+);
 
 function toggleMobileMenu() {
 	mobileMenuActive.value = !mobileMenuActive.value;
 }
-
-watch(
-	// closes menu on route change
-	() => route.path,
-	() => {
-		mobileMenuActive.value = false
-	}
-)
-
 </script>
 
 <style lang="scss" scoped>
-nav {
-	display: grid;
-	@include media(xsm) {
-		padding-top: 8em; // pushes item below 'header' (toggle-button span:before)
-	}
-}
-
-
-.main-menu__basic {
-	position: relative;
-	display: flex;
-	flex-wrap: wrap;
-	align-content: center;
-	margin: 0;
-	padding: 0;
-
-	@include media(xsm) {
-		position: relative;
-		display: block;
-		height: 100%;
-		margin: 0;
-		padding-left: 0;
-	}
-
-	span {
-		padding: $spacing2;
-		width: 8em;
-		@include media(xsm) {
-			width: auto;
-		}
-	}
-
-	.menu-item {
-		cursor: pointer;
-		span {
-			display: block;
-			text-align: center;
-			list-style: none;
-			transition: $transition1;
-		}
-
-		@include media(xsm) {
-			&.router-link-active {
-				outline: 0.3em solid var(--hover-background-color);
-			}
-		}
-	}
-}
-
-
-// toggle states/ mobile
-
-nav {
-	@include media(xsm) {
-		display: none;
-		menu {
-			display: block !important;
-		}
-	}
-}
-
-nav.mobileMenuOpen {
-	position: fixed;
-	display: grid;
-	grid-template-rows: auto max-content 1fr;
-	height: 100vh;
-	width: max-content;
-	top: 0;
-	right: 0;
-	background: $white;
-	&::before {
-		position: fixed;
-		content: "";
-		width: 100%;
-		height: 100vh;
-		backdrop-filter: blur(0.3em);
-		inset: 0;
-	}
-}
-
-#mobile-menu__toggle-button {
-	display: none;
-	cursor: pointer;
-	@include media(xsm) {
-		position: absolute;
-		z-index: 99;
-		display: block;
-		font-size: 0.8em;
-		text-align: center;
-		width: max-content;
-		margin-inline: auto;
-		justify-self: center;
-		padding: $spacing1;
-		margin-top: $spacing0;
-		right: 0;
-	}
-	span {
-		font-size: $font-size2;
-		display: block;
-	}
-}
-
-#mobile-menu__toggle-button.mobileMenuOpen {
-	position: fixed;
-
-	span::after {
-		display: block;
-	}
-}
-
 #main-menu {
 	@include media(xsm) {
 		position: absolute;
@@ -160,5 +48,92 @@ nav.mobileMenuOpen {
 		top: 0;
 		right: 0;
 	}
+}
+
+nav {
+	@include media(xsm) {
+		display: none;
+	}
+}
+
+nav.mobileMenuOpen {
+	@include media(xsm) {
+		position: fixed;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		inset: 0;
+		background: rgba($off-white, 0.97);
+		backdrop-filter: blur(0.4em);
+		z-index: 98;
+	}
+}
+
+.main-menu__basic {
+	display: flex;
+	align-items: center;
+	gap: $spacing5;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	@include media(xsm) {
+		flex-direction: column;
+		gap: $spacing6;
+		text-align: center;
+	}
+}
+
+.menu-item {
+	font-family: $font-main;
+	font-size: $font-size8;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	color: $muted;
+	transition: color $transition2;
+	cursor: pointer;
+
+	&.router-link-active,
+	&.router-link-exact-active {
+		color: $gold;
+	}
+
+	@include hover {
+		color: $ink;
+	}
+
+	@include media(xsm) {
+		font-size: $font-size4;
+		letter-spacing: 0.1em;
+	}
+}
+
+#mobile-menu__toggle-button {
+	display: none;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: $spacing2;
+	color: $ink;
+
+	@include media(xsm) {
+		position: relative;
+		z-index: 99;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: $font-size3;
+	}
+
+	span {
+		display: block;
+		line-height: 1;
+	}
+}
+
+#mobile-menu__toggle-button.mobileMenuOpen {
+	position: fixed;
+	top: $spacing2;
+	right: $spacing2;
 }
 </style>

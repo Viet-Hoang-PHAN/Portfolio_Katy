@@ -1,8 +1,19 @@
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
+
+function httpsRequest(options) {
+  return new Promise((resolve, reject) => {
+    const req = https.request(options, (res) => {
+      resolve(res.statusCode);
+    });
+    req.on('error', reject);
+    req.end();
+  });
+}
 
 module.exports = {
-  onSuccess: async ({ utils }) => {
+  onSuccess: async () => {
     const cloudName = 'dvslwsa0d';
     const apiKey = '166261252296815';
     const apiSecret = process.env.NUXT_CLOUDINARY_API_SECRET;
@@ -29,20 +40,19 @@ module.exports = {
 
     for (const folder of folders) {
       try {
-        const res = await fetch(
-          `https://api.cloudinary.com/v1_1/${cloudName}/folders/${encodeURIComponent(folder)}`,
-          {
-            method: 'POST',
-            headers: { Authorization: `Basic ${credentials}` }
-          }
-        );
+        const status = await httpsRequest({
+          hostname: 'api.cloudinary.com',
+          path: `/v1_1/${cloudName}/folders/${encodeURIComponent(folder)}`,
+          method: 'POST',
+          headers: { Authorization: `Basic ${credentials}` }
+        });
 
-        if (res.ok) {
+        if (status === 200 || status === 201) {
           console.log(`[cloudinary] Dossier créé : ${folder}`);
-        } else if (res.status === 409) {
+        } else if (status === 409) {
           console.log(`[cloudinary] Dossier déjà existant : ${folder}`);
         } else {
-          console.warn(`[cloudinary] Erreur pour "${folder}" : ${res.status}`);
+          console.warn(`[cloudinary] Erreur pour "${folder}" : ${status}`);
         }
       } catch (err) {
         console.warn(`[cloudinary] Échec pour "${folder}" :`, err.message);

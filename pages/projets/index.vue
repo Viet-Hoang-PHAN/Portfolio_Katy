@@ -89,6 +89,16 @@ function getImageUrl(url, index) {
 
 	a {
 		display: block;
+
+		@include hover {
+			.projet-card__image-wrap img {
+				transform: scale(1.03);
+			}
+
+			.projet-card__title {
+				color: $gold;
+			}
+		}
 	}
 }
 
@@ -104,11 +114,7 @@ function getImageUrl(url, index) {
 		display: block;
 		width: 100%;
 		height: auto;
-		transition: transform $transition4;
-	}
-
-	.projet-card a:hover & img {
-		transform: scale(1.04);
+		transition: transform 400ms ease;
 	}
 }
 
@@ -140,9 +146,6 @@ function getImageUrl(url, index) {
 	color: $ink;
 	line-height: 1.3;
 	transition: color $transition2;
-
-	.projet-card a:hover & {
-		color: $gold;
-	}
 }
+
 </style>

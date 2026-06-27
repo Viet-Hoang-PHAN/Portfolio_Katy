@@ -1,27 +1,82 @@
 <template>
 	<main id="main" class="contact">
 		<div class="contact__inner">
-			<h1>{{ contact?.title }}</h1>
+			<div class="contact__heading">
+				<h1>{{ contact?.title }}</h1>
+				<p v-if="contact?.intro" class="contact__intro">{{ contact.intro }}</p>
+			</div>
 
-			<p v-if="contact?.intro" class="contact__intro">
-				{{ contact.intro }}
-			</p>
-
-			<a
-				v-if="contact?.email"
-				:href="`mailto:${contact.email}`"
-				class="contact__email"
+			<form
+				v-if="!submitted"
+				name="contact"
+				method="POST"
+				data-netlify="true"
+				netlify-honeypot="bot-field"
+				@submit.prevent="handleSubmit"
 			>
-				{{ contact.email }}
-			</a>
+				<input type="hidden" name="form-name" value="contact" />
+				<input type="hidden" name="bot-field" />
 
-			<ul v-if="contact?.socialLinks?.length" class="contact__social">
-				<li v-for="link in contact.socialLinks" :key="link.url">
-					<a :href="link.url" target="_blank" rel="noopener noreferrer">
-						{{ link.label }}
-					</a>
-				</li>
-			</ul>
+				<fieldset>
+					<div class="input-wrapper">
+						<input
+							id="nom"
+							v-model="form.nom"
+							type="text"
+							name="nom"
+							placeholder="Nom"
+							required
+						/>
+						<label for="nom">Nom</label>
+					</div>
+
+					<div class="input-wrapper">
+						<input
+							id="email"
+							v-model="form.email"
+							type="email"
+							name="email"
+							placeholder="Email"
+							required
+						/>
+						<label for="email">Email</label>
+					</div>
+
+					<div class="input-wrapper">
+						<input
+							id="objet"
+							v-model="form.objet"
+							type="text"
+							name="objet"
+							placeholder="Objet"
+							required
+						/>
+						<label for="objet">Objet</label>
+					</div>
+
+					<div class="input-wrapper input-type-textarea">
+						<textarea
+							id="message"
+							v-model="form.message"
+							name="message"
+							placeholder="Message"
+							rows="5"
+							required
+						></textarea>
+						<label for="message">Message</label>
+					</div>
+				</fieldset>
+
+				<button type="submit" class="contact__submit" :disabled="sending">
+					{{ sending ? 'Envoi…' : 'Envoyer' }}
+				</button>
+
+				<p v-if="error" class="contact__error">Une erreur est survenue, veuillez réessayer.</p>
+			</form>
+
+			<div v-else class="contact__success">
+				<p>Merci pour votre message, je reviendrai vers vous rapidement.</p>
+			</div>
 		</div>
 	</main>
 </template>
@@ -32,6 +87,32 @@ const { data: contact } = reactive(await useAsyncData('contact', () =>
 ));
 
 setSeoHead(contact.SEOmetaData);
+
+const form = reactive({ nom: '', email: '', objet: '', message: '' });
+const submitted = ref(false);
+const sending = ref(false);
+const error = ref(false);
+
+async function handleSubmit() {
+	sending.value = true;
+	error.value = false;
+
+	try {
+		await $fetch('/', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: new URLSearchParams({
+				'form-name': 'contact',
+				...form
+			}).toString()
+		});
+		submitted.value = true;
+	} catch {
+		error.value = true;
+	} finally {
+		sending.value = false;
+	}
+}
 </script>
 
 <style lang="scss" scoped>
@@ -45,11 +126,19 @@ setSeoHead(contact.SEOmetaData);
 }
 
 .contact__inner {
-	text-align: center;
+	width: 100%;
 	max-width: 32em;
+	padding: $spacing6 0;
+
+}
+
+.contact__heading {
+	text-align: center;
+	margin-bottom: $spacing4;
 
 	h1 {
 		margin-top: 0;
+		margin-bottom: $spacing2;
 
 		&::before {
 			display: none;
@@ -60,43 +149,52 @@ setSeoHead(contact.SEOmetaData);
 .contact__intro {
 	color: $muted;
 	font-size: $font-size6;
-	margin-bottom: $spacing6;
+	margin: 0;
+	line-height: 1.6;
 }
 
-.contact__email {
-	display: inline-block;
-	font-size: $font-size5;
-	letter-spacing: 0.05em;
+fieldset {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing4;
+	margin-bottom: $spacing5;
+}
+
+.contact__submit {
+	display: block;
+	width: 100%;
+	padding: $spacing3 $spacing5;
+	background: transparent;
+	border: 1px solid $gold;
 	color: $ink;
-	border-bottom: 1px solid $gold;
-	padding-bottom: 0.1em;
-	transition: color $transition2, border-color $transition2;
-	margin-bottom: $spacing6;
+	font-size: $font-size8;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition: background $transition2, color $transition2;
 
 	@include hover {
-		color: $gold;
+		background: $gold;
+		color: $off-white;
+	}
+
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
 	}
 }
 
-.contact__social {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	display: flex;
-	justify-content: center;
-	gap: $spacing5;
-	flex-wrap: wrap;
+.contact__error {
+	margin-top: $spacing3;
+	color: $red;
+	font-size: $font-size8;
+	text-align: center;
+}
 
-	li a {
-		font-size: $font-size8;
-		letter-spacing: 0.15em;
-		text-transform: uppercase;
-		color: $muted;
-		transition: color $transition2;
-
-		@include hover {
-			color: $gold;
-		}
-	}
+.contact__success {
+	text-align: center;
+	color: $muted;
+	font-size: $font-size6;
+	letter-spacing: 0.05em;
 }
 </style>

@@ -2,15 +2,10 @@
 	<div class="responsive-image" @[clickEvent]="openLightbox">
 		<img :key="props.url" :src="imageUrl" :class="{ '__has-lightbox': props.lightbox }" width="800" height="600"
 			:alt="imageUrl" />
-
-		<div v-if="lightbox" class="lightbox-hint">
-			<span class="__enlarge" v-if="diagOpen === false">&#10063;</span>
-			<span class="__minimize" v-if="diagOpen === true">&#10064;</span>
-		</div>
 	</div>
-	<dialog v-if="lightbox" :class="{ __lightbox: diagOpen }">
-		<button class="button" @click="closeLightbox">close</button>
-		<img :key="props.url" :src="imageUrl" />
+	<dialog v-if="props.lightbox" ref="dialogEl" @click.self="closeLightbox">
+		<button class="lightbox-close" @click="closeLightbox">✕</button>
+		<img :key="props.url" :src="imageUrlFull" />
 	</dialog>
 </template>
 
@@ -48,29 +43,19 @@ const imageUrl = computed(() => {
 // set object fit in css
 const objectFit = props.objectFit ? props.objectFit : "contain";
 
-// dialog (lightbox container) open?
-const diagOpen = ref(false);
+const dialogEl = ref(null);
 
-const clickEvent = computed(() => {
-	// checks if lightbox is true => returns 'click' as an eventHandler
-	return props.lightbox ? "click" : null;
-});
+const clickEvent = computed(() => props.lightbox ? "click" : null);
 
-const tipEnlarge = "click to enlarge"
-
-const tipMinimize = "click to minimize"
+const imageUrlFull = computed(() => cldDelivery(props.url, 'f_auto,c_scale,w_2400'));
 
 function openLightbox() {
-	diagOpen.value = true;
-	let body = document.body;
-	setTimeout(() => {
-		body.classList.add("lightbox-active");
-	}, 1000);
+	dialogEl.value?.showModal();
+	document.body.style.overflow = 'hidden';
 }
 function closeLightbox() {
-	diagOpen.value = false;
-	let body = document.body;
-	body.classList.remove("lightbox-active");
+	dialogEl.value?.close();
+	document.body.style.overflow = '';
 }
 
 
@@ -91,92 +76,87 @@ const accentColor = computed(() => {
 	position: relative;
 	width: 100%;
 	height: 100%;
+	overflow: hidden;
 
 	img {
 		width: 100%;
 		height: 100%;
 		object-fit: v-bind('objectFit');
+		transition: transform 400ms linear;
+	}
+
+	@include hover {
+		img.__has-lightbox {
+			transform: scale(1.03);
+		}
+
+		&::after {
+			opacity: 1;
+		}
+	}
+
+	&::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border: 1px solid $gold;
+		opacity: 0;
+		transition: opacity $transition2;
+		pointer-events: none;
 	}
 }
 
 img.__has-lightbox {
-	@include hover {
-		outline: 0.2em solid v-bind('accentColor');
-	}
+	cursor: pointer;
 }
 
-dialog.__lightbox {
+dialog[open] {
 	position: fixed;
 	z-index: 100;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
+	inset: 0;
 	width: 100vw;
 	height: 100vh;
-	overflow: auto;
-	display: grid;
-	grid-template-rows: 1fr auto auto 1fr;
-	background: $black;
+	max-width: 100vw;
+	max-height: 100vh;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background: rgba($black, 0.95);
+	border: none;
+	padding: $spacing4;
+	box-sizing: border-box;
 
-	button {
-		grid-row: 2;
+	&::backdrop {
+		background: rgba($black, 0.9);
 	}
 
 	img {
-		position: relative;
-		grid-row: 3;
-		width: 100%;
-		max-height: 200%;
-		margin-bottom: $spacing6;
+		max-width: 100%;
+		max-height: 100%;
 		object-fit: contain;
+		display: block;
 	}
 }
 
-.lightbox-hint {
-	@include media(xsm) {
-		display: none;
-	}
+.lightbox-close {
+	position: fixed;
+	top: $spacing3;
+	right: $spacing3;
+	background: none;
+	border: none;
+	color: $base-color;
+	font-size: $font-size3;
+	cursor: pointer;
+	line-height: 1;
+	padding: $spacing1;
+	opacity: 0.7;
+	transition: opacity $transition2;
 
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba($color: $dark-grey, $alpha: 0.8);
-	border: 0.2em solid $base-color;
-	z-index: 1;
-	opacity: 0;
-	transition: $transition2;
-	display: grid;
-	justify-content: center;
-	align-content: center;
-
-	span {
-		font-size: $font-size1;
-		color: $base-color;
-		text-align: center;
-
-		&::after {
-			font-size: $font-size6;
-			display: block;
-		}
-	}
-
-	span.__enlarge {
-		&::after {
-			content: v-bind(tipEnlarge);
-		}
-	}
-
-	span.__minimize {
-		&::after {
-			content: v-bind(tipMinimize);
-		}
-	}
-
-	@include hover {
+	&:hover {
 		opacity: 1;
 	}
 }
+
 </style>

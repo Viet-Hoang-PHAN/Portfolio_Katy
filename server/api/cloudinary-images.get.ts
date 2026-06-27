@@ -1,7 +1,9 @@
+const ALLOWED_FOLDERS = ['JO NICO', 'ANISSA', 'DORINE ET KEVIN', 'JUSTINE FOULON', 'SO CINDY'];
+
 export default defineEventHandler(async (event) => {
 	const { folder } = getQuery(event) as { folder?: string };
 
-	if (!folder) return [];
+	if (!folder || !ALLOWED_FOLDERS.includes(folder)) return [];
 
 	const config = useRuntimeConfig();
 	const cloudName = 'dvslwsa0d';
@@ -17,7 +19,7 @@ export default defineEventHandler(async (event) => {
 		}>(url, {
 			method: 'POST',
 			body: {
-				expression: `asset_folder:${folder}`,
+				expression: `asset_folder:"${folder}"`,
 				max_results: 100,
 				sort_by: [{ created_at: 'asc' }]
 			},

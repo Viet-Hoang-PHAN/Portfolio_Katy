@@ -43,10 +43,7 @@ function toggleMobileMenu() {
 <style lang="scss" scoped>
 #main-menu {
 	@include media(xsm) {
-		position: absolute;
 		z-index: 99;
-		top: 0;
-		right: 0;
 	}
 }
 

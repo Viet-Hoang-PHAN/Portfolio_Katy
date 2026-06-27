@@ -1,10 +1,6 @@
 <template>
 	<main id="main" class="projet">
 
-		<div v-if="projet?.coverImage" class="projet__cover">
-			<MediaRespImage :url="projet.coverImage" :lightbox="true" objectFit="cover" />
-		</div>
-
 		<div class="projet__header">
 			<span v-if="projet?.category" class="projet__category">{{ projet.category }}</span>
 			<h1>{{ projet?.title }}</h1>
@@ -21,7 +17,7 @@
 
 		<ul v-if="galleryImages?.length" class="projet__gallery">
 			<li v-for="(imageUrl, i) in galleryImages" :key="i" class="projet__gallery-item">
-				<MediaRespImage :url="imageUrl" :lightbox="true" objectFit="cover" />
+				<MediaRespImage :url="imageUrl" :lightbox="true" objectFit="contain" />
 			</li>
 		</ul>
 
@@ -57,23 +53,10 @@ function formatDate(date) {
 
 <style lang="scss" scoped>
 .projet {
-	max-width: 64em;
-	margin-inline: auto;
+	max-width: unset;
+	padding: $spacing3;
 
 	@include fade-in;
-}
-
-.projet__cover {
-	width: 100vw;
-	margin-left: calc(-1 * $spacing6);
-	aspect-ratio: 16 / 9;
-	overflow: hidden;
-	margin-bottom: $spacing6;
-
-	@include media(xsm) {
-		margin-left: calc(-1 * $spacing3);
-		aspect-ratio: 4 / 3;
-	}
 }
 
 .projet__header {
@@ -121,21 +104,20 @@ function formatDate(date) {
 
 .projet__gallery {
 	list-style: none;
-	padding: 0;
+	padding: 0 $spacing1;
 	margin: $spacing7 0;
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	gap: $spacing2;
-
-	@include media(xsm) {
-		grid-template-columns: 1fr;
-	}
+	column-width: 200px;
+	column-gap: $spacing2;
 }
 
 .projet__gallery-item {
-	aspect-ratio: 4 / 3;
-	overflow: hidden;
-	position: relative;
+	break-inside: avoid;
+	margin-bottom: $spacing2;
+
+	:deep(img) {
+		height: auto;
+		display: block;
+	}
 }
 
 

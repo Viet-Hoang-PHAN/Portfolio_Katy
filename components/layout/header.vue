@@ -27,7 +27,8 @@
 
 	@include media(xsm) {
 		padding: $spacing3 $spacing3;
-		gap: $spacing3;
+		gap: $spacing2;
+		grid-template-columns: minmax(0, 1fr) auto;
 	}
 }
 

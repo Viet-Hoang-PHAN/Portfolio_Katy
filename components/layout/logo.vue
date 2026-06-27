@@ -14,10 +14,12 @@ const { data: site } = await useAsyncData('site-settings', () =>
 #header__logo {
 	display: flex;
 	align-items: center;
+	min-width: 0;
+	overflow: hidden;
 }
 
 .logo__name {
-	font-family: $font-art;
+	font-family: $font-accent;
 	font-size: $font-size2;
 	font-weight: normal;
 	color: $ink;
@@ -30,7 +32,9 @@ const { data: site } = await useAsyncData('site-settings', () =>
 	}
 
 	@include media(xsm) {
-		font-size: $font-size3;
+		font-size: clamp(1.4rem, 6vw, $font-size3);
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 }
 </style>

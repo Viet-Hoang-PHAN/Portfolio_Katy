@@ -1,13 +1,9 @@
 ---
 title: Accueil
-content: >-
-  # Instants Eternels
-
-
-  ![Main](https://res.cloudinary.com/dvslwsa0d/image/upload/v1782044476/HKpBM0yWkAAclyd_dytnp6.jpg "Main")
-
-
-  Texte d'accroche à compléter. Oui
+heroImage: https://res.cloudinary.com/dvslwsa0d/image/upload/v1782576133/_DSC4123_cby4za.jpg
+heroTitle: INSTANTS ETERNELS
+heroSubtitle: Photographie & émotions
+heroCtaText: VOIR MES PROJETS
 SEOmetaData:
   metaTitle: Instants Eternels
   metaDescription: Portfolio Instants Eternels.

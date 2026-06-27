@@ -64,7 +64,7 @@ body * {
 			min-height: 100%;
 			padding: $spacing6;
 			@include media(xsm) {
-				padding-inline: $spacing3;
+				padding-inline: $spacing1;
 			}
 			a {
 				color: $gold;
@@ -72,6 +72,11 @@ body * {
 					color: $gold-dark;
 				}
 			}
+		}
+		main.home {
+			padding: 0;
+			height: 100%;
+			min-height: unset;
 		}
 	}
 	footer {

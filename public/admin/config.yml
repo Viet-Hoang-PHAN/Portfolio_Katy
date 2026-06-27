@@ -4,7 +4,7 @@
 
 backend:
   name: git-gateway
-  branch: main # Branch to update (optional; defaults to master)
+  branch: main
 
 media_folder: "public/upload"
 public_folder: "/"
@@ -17,6 +17,7 @@ media_library:
     cloud_name: dvslwsa0d
     api_key: 166261252296815
 
+locale: fr
 
 # SEO anchor:
 seo: &seo
@@ -73,8 +74,12 @@ collections:
         file: "content/pages/home.md"
         fields:
           - { name: "title", label: "Title", widget: "string" }
-          - { name: "content", label: "Content", widget: "markdown" }
+          - { name: "heroImage", label: "Image hero", widget: "image", required: false }
+          - { name: "heroTitle", label: "Titre hero", widget: "string" }
+          - { name: "heroSubtitle", label: "Sous-titre hero", widget: "string", required: false }
+          - { name: "heroCtaText", label: "Texte du bouton", widget: "string", required: false }
           - *seo
+
       - name: "about"
         label: "À propos"
         file: "content/pages/about.md"
@@ -112,22 +117,19 @@ collections:
     label: "Projets"
     folder: "content/projets"
     create: true
+    delete: true
     slug: "{{slug}}"
     preview_path: "projets/{{slug}}"
     fields:
       - { name: "title", label: "Titre", widget: "string" }
       - { name: "date", label: "Date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
-      - { name: "category", label: "Catégorie", widget: "string", required: false, hint: "ex: Photographie, Peinture, Illustration…" }
-      - { name: "coverImage", label: "Image de couverture", widget: "image", required: false }
-      - { name: "description", label: "Description courte", widget: "text", required: false, hint: "Affichée dans la grille et en introduction de la page projet" }
+      - { name: "category", label: "Catégorie", widget: "string", required: false }
+      - { name: "coverImage", label: "Image de couverture (URL Cloudinary)", widget: "string", required: false, default: "" }
+      - { name: "description", label: "Description courte", widget: "text", required: false }
       - { name: "content", label: "Contenu", widget: "markdown", required: false }
       - name: "cloudinaryFolder"
         label: "Dossier Cloudinary (galerie)"
         widget: "string"
         required: false
-        hint: "Nom du dossier dans Cloudinary contenant les images du projet (ex: projets/nom-du-projet)"
+        hint: "Nom exact du dossier dans Cloudinary (ex: Mariage)"
       - *seo
-     
-
-          
-

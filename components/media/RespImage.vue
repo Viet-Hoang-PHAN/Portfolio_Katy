@@ -5,7 +5,7 @@
 	</div>
 	<dialog v-if="props.lightbox" ref="dialogEl" @click.self="closeLightbox">
 		<button class="lightbox-close" @click="closeLightbox">✕</button>
-		<img :key="props.url" :src="imageUrlFull" />
+		<img :key="props.url" :src="isOpen ? imageUrlFull : undefined" />
 	</dialog>
 </template>
 
@@ -25,13 +25,11 @@ const props = defineProps({
 
 
 // Preset Cloudinary imaga size transformation
-const respSize = ref("w_1920")
+const respSize = ref("w_800")
 
-// Change image transformation to 1920 or 1024
-// NOTE: adding more variables will lead to more transformations! Keep your transformations per month in check ;)
 onMounted(() => {
 	if (process.client) {
-		window.innerWidth < 1024 ? respSize.value = "w_1024" : respSize.value = "w_1920"
+		window.innerWidth < 1024 ? respSize.value = "w_400" : respSize.value = "w_800"
 	}
 })
 
@@ -44,16 +42,19 @@ const imageUrl = computed(() => {
 const objectFit = props.objectFit ? props.objectFit : "contain";
 
 const dialogEl = ref(null);
+const isOpen = ref(false);
 
 const clickEvent = computed(() => props.lightbox ? "click" : null);
 
-const imageUrlFull = computed(() => cldDelivery(props.url, 'f_auto,q_auto,c_scale,w_2400'));
+const imageUrlFull = computed(() => props.url);
 
 function openLightbox() {
+	isOpen.value = true;
 	dialogEl.value?.showModal();
 	document.body.style.overflow = 'hidden';
 }
 function closeLightbox() {
+	isOpen.value = false;
 	dialogEl.value?.close();
 	document.body.style.overflow = '';
 }

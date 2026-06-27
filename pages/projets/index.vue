@@ -32,7 +32,6 @@
 </template>
 
 <script setup>
-import cldDelivery from '~/composables/cldDelivery';
 
 useHead({ title: 'Projets — Instants Eternels' });
 
@@ -40,9 +39,8 @@ const { data: projets } = await useAsyncData('projets', () =>
 	queryContent('/projets').sort({ date: -1 }).find()
 );
 
-function getImageUrl(url, index) {
-	const width = index === 0 ? 'w_1600' : 'w_900';
-	return cldDelivery(url, `f_auto,q_auto,c_scale,${width}`);
+function getImageUrl(url) {
+	return url;
 }
 </script>
 

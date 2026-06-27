@@ -42,7 +42,7 @@ const { data: projets } = await useAsyncData('projets', () =>
 
 function getImageUrl(url, index) {
 	const width = index === 0 ? 'w_1600' : 'w_900';
-	return cldDelivery(url, `f_auto,c_scale,${width}`);
+	return cldDelivery(url, `f_auto,q_auto,c_scale,${width}`);
 }
 </script>
 

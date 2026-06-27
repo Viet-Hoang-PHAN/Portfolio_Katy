@@ -22,9 +22,9 @@ setSeoHead(home.SEOmetaData);
 
 const heroImageUrl = computed(() => {
 	if (process.client && window.innerWidth < 768) {
-		return cldDelivery(home.heroImage, 'f_auto,c_fill,w_768');
+		return cldDelivery(home.heroImage, 'f_auto,q_auto,c_fill,w_768');
 	}
-	return cldDelivery(home.heroImage, 'f_auto,c_fill,w_1920');
+	return cldDelivery(home.heroImage, 'f_auto,q_auto,c_fill,w_1920');
 });
 
 </script>

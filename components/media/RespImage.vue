@@ -37,7 +37,7 @@ onMounted(() => {
 
 // Build absolute url
 const imageUrl = computed(() => {
-	return cldDelivery(props.url, 'f_auto,c_scale,' + respSize.value)
+	return cldDelivery(props.url, 'f_auto,q_auto,c_scale,' + respSize.value)
 })
 
 // set object fit in css
@@ -47,7 +47,7 @@ const dialogEl = ref(null);
 
 const clickEvent = computed(() => props.lightbox ? "click" : null);
 
-const imageUrlFull = computed(() => cldDelivery(props.url, 'f_auto,c_scale,w_2400'));
+const imageUrlFull = computed(() => cldDelivery(props.url, 'f_auto,q_auto,c_scale,w_2400'));
 
 function openLightbox() {
 	dialogEl.value?.showModal();

@@ -1,7 +1,7 @@
 <template>
 	<div class="responsive-image" @[clickEvent]="openLightbox">
-		<img :key="props.url" :src="imageUrl" :class="{ '__has-lightbox': props.lightbox }" width="800" height="600"
-			:alt="imageUrl" />
+		<img :key="props.url" :src="imageUrl" :class="{ '__has-lightbox': props.lightbox, '--loaded': loaded }" width="800" height="600"
+			:alt="imageUrl" @load="loaded = true" />
 	</div>
 	<dialog v-if="props.lightbox" ref="dialogEl" @click.self="closeLightbox">
 		<button class="lightbox-close" @click="closeLightbox">✕</button>
@@ -43,6 +43,7 @@ const objectFit = props.objectFit ? props.objectFit : "contain";
 
 const dialogEl = ref(null);
 const isOpen = ref(false);
+const loaded = ref(false);
 
 const clickEvent = computed(() => props.lightbox ? "click" : null);
 
@@ -83,7 +84,12 @@ const accentColor = computed(() => {
 		width: 100%;
 		height: 100%;
 		object-fit: v-bind('objectFit');
-		transition: transform 400ms linear;
+		transition: transform 400ms linear, opacity 400ms ease;
+		opacity: 0;
+
+		&.--loaded {
+			opacity: 1;
+		}
 	}
 
 	@include hover {

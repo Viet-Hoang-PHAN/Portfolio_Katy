@@ -19,9 +19,6 @@
 							<div v-else class="projet-card__placeholder" />
 						</div>
 						<figcaption class="projet-card__info">
-							<span v-if="projet.category" class="projet-card__category">
-								{{ projet.category }}
-							</span>
 							<p class="projet-card__title">{{ projet.title }}</p>
 						</figcaption>
 					</figure>

@@ -1,4 +1,4 @@
-const ALLOWED_FOLDERS = ['JO NICO', 'ANISSA', 'DORINE ET KEVIN', 'JUSTINE FOULON', 'SO CINDY'];
+const ALLOWED_FOLDERS = ['Mariage', 'Famille', 'Grossesse'];
 
 export default defineEventHandler(async (event) => {
 	const { folder } = getQuery(event) as { folder?: string };
@@ -19,8 +19,8 @@ export default defineEventHandler(async (event) => {
 		}>(url, {
 			method: 'POST',
 			body: {
-				expression: `asset_folder:"${folder}"`,
-				max_results: 100,
+				expression: `asset_folder:"${folder}" OR folder="${folder}"`,
+				max_results: 500,
 				sort_by: [{ created_at: 'asc' }]
 			},
 			headers: {

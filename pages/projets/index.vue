@@ -145,7 +145,7 @@ function getImageUrl(url, index) {
 	letter-spacing: 0.05em;
 	color: $ink;
 	line-height: 1.3;
-	transition: color $transition2;
+	transition: color 400ms ease;
 }
 
 </style>

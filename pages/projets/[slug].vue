@@ -107,6 +107,7 @@ function formatDate(date) {
 	padding: 0 $spacing1;
 	margin: $spacing7 0;
 	column-width: 200px;
+	column-count: 6;
 	column-gap: $spacing2;
 }
 

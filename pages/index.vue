@@ -3,6 +3,14 @@
 		<div class="hero" :style="{ backgroundImage: `url(${heroImageUrl})` }">
 			<div class="hero__overlay" />
 			<div class="hero__content">
+				<img
+					v-if="site?.logoImage"
+					:src="cldDelivery(site.logoImage, 'f_auto,q_auto,w_160,h_160,c_fit')"
+					:alt="site?.siteName"
+					class="hero__logo"
+					width="160"
+					height="160"
+				/>
 				<h1 class="hero__title">{{ home.heroTitle }}</h1>
 				<p class="hero__subtitle">{{ home.heroSubtitle }}</p>
 				<NuxtLink class="hero__cta" to="/projets">{{ home.heroCtaText }}</NuxtLink>
@@ -16,6 +24,10 @@
 
 const { data: home } = reactive(await useAsyncData("home", () =>
 	queryContent("/pages/home").findOne())
+);
+
+const { data: site } = await useAsyncData('site-settings', () =>
+	queryContent('/settings/site').findOne()
 );
 
 setSeoHead(home.SEOmetaData);
@@ -64,6 +76,18 @@ const heroImageUrl = computed(() => {
 	@include media(xsm) {
 		padding: $spacing4 $spacing3;
 		gap: $spacing2;
+	}
+}
+
+.hero__logo {
+	width: 10rem;
+	height: 10rem;
+	object-fit: contain;
+	filter: drop-shadow(0 0 2rem rgba(212, 175, 55, 0.5));
+
+	@include media(xsm) {
+		width: 7rem;
+		height: 7rem;
 	}
 }
 

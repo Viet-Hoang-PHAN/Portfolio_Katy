@@ -8,6 +8,13 @@ export default defineNuxtConfig({
 			charset: "utf-8",
 			viewport: "width=device-width, initial-scale=1",
 			title: "Instants Eternels",
+			link: [
+				{
+					rel: "icon",
+					type: "image/png",
+					href: "https://res.cloudinary.com/dvslwsa0d/image/upload/f_auto,q_auto,w_64,h_64,c_fit/v1782673353/file_00000000b32871f4b8db52d4412dd640_xwfwdz.png",
+				},
+			],
 		},
 	},
 	modules: ["@nuxt/content"],
